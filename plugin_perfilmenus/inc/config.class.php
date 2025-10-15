@@ -143,7 +143,7 @@ class PluginPerfilmenusConfig
         $profiles  = self::getAllProfiles();
         $features  = self::getAvailableFeatures();
 
-        echo Html::openForm($target, 'plugin_perfilmenus_config');
+        echo "<form method='post' action='" . Html::clean($target) . "' id='plugin_perfilmenus_config' name='plugin_perfilmenus_config'>";
         echo Html::hidden('_glpi_csrf_token', Session::getNewCSRFToken());
 
         echo "<table class='tab_cadre_fixehov'>";
@@ -180,7 +180,7 @@ class PluginPerfilmenusConfig
             echo '</div>';
         }
 
-        echo Html::closeForm();
+        echo '</form>';
     }
 
     /**
