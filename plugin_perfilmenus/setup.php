@@ -6,20 +6,20 @@
 /**
  * Initialize plugin hooks
  */
-function plugin_init_perfilmenus() {
+function plugin_init_plugin_perfilmenus() {
     global $PLUGIN_HOOKS;
 
-    $PLUGIN_HOOKS['csrf_compliant']['perfilmenus'] = true;
-    $PLUGIN_HOOKS['config_page']['perfilmenus'] = 'front/config.form.php';
-    $PLUGIN_HOOKS['redefine_menus']['perfilmenus'] = 'plugin_perfilmenus_redefine_menus';
+    $PLUGIN_HOOKS['csrf_compliant']['plugin_perfilmenus'] = true;
+    $PLUGIN_HOOKS['config_page']['plugin_perfilmenus'] = 'front/config.form.php';
+    $PLUGIN_HOOKS['redefine_menus']['plugin_perfilmenus'] = 'plugin_perfilmenus_redefine_menus';
 }
 
 /**
  * Plugin information
  */
-function plugin_version_perfilmenus() {
+function plugin_version_plugin_perfilmenus() {
     return [
-        'name'           => __('Menu por perfil', 'perfilmenus'),
+        'name'           => __('Menu por perfil', 'plugin_perfilmenus'),
         'version'        => '1.0.0',
         'author'         => 'plugin_perfilmenus',
         'homepage'       => 'https://glpi-developer-documentation.readthedocs.io/',
@@ -36,7 +36,7 @@ function plugin_version_perfilmenus() {
 /**
  * Install routine
  */
-function plugin_perfilmenus_install() {
+function plugin_plugin_perfilmenus_install() {
     global $DB;
 
     $table = 'glpi_plugin_perfilmenus_profiles';
@@ -61,7 +61,7 @@ function plugin_perfilmenus_install() {
 /**
  * Uninstall routine
  */
-function plugin_perfilmenus_uninstall() {
+function plugin_plugin_perfilmenus_uninstall() {
     global $DB;
 
     $table = 'glpi_plugin_perfilmenus_profiles';
