@@ -10,7 +10,7 @@ class PluginPerfilmenusConfig
      */
     public static function getTypeName($nb = 0)
     {
-        return _n('Menu de perfil', 'Menus de perfil', $nb, 'plugin_perfilmenus');
+        return _n('Menu de perfil', 'Menus de perfil', $nb, 'perfilmenus');
     }
 
     /**
@@ -21,8 +21,8 @@ class PluginPerfilmenusConfig
     public static function getAvailableFeatures()
     {
         return [
-            'tickets'     => _n('Ticket', 'Tickets', 2, 'plugin_perfilmenus'),
-            'ticket_new'  => __('New ticket', 'plugin_perfilmenus'),
+            'tickets'     => _n('Ticket', 'Tickets', 2),
+            'ticket_new'  => __('New ticket'),
         ];
     }
 
@@ -129,7 +129,7 @@ class PluginPerfilmenusConfig
             self::saveProfileConfig((int)$profileId, $profileVisibility);
         }
 
-        Session::addMessageAfterRedirect(__('Configuration saved', 'plugin_perfilmenus'));
+        Session::addMessageAfterRedirect(__('Configuration saved', 'perfilmenus'));
     }
 
     /**
@@ -139,11 +139,11 @@ class PluginPerfilmenusConfig
     {
         Session::checkRight('config', READ);
 
-        $target    = Plugin::getWebDir('plugin_perfilmenus') . '/front/config.form.php';
+        $target    = Plugin::getWebDir('perfilmenus') . '/front/config.form.php';
         $profiles  = self::getAllProfiles();
         $features  = self::getAvailableFeatures();
 
-        echo "<form method='post' action='" . Html::clean($target) . "' id='plugin_perfilmenus_config'>";
+        echo Html::openForm($target, 'plugin_perfilmenus_config');
         echo Html::hidden('_glpi_csrf_token', Session::getNewCSRFToken());
 
         echo "<table class='tab_cadre_fixehov'>";
@@ -180,7 +180,7 @@ class PluginPerfilmenusConfig
             echo '</div>';
         }
 
-        echo '</form>';
+        echo Html::closeForm();
     }
 
     /**
