@@ -27,10 +27,19 @@ function plugin_version_plugin_perfilmenus() {
         'requirements'   => [
             'glpi' => [
                 'min' => '9.5.5',
-                'max' => '9.6.0',
+                'max' => '10.5.x',
             ],
         ],
     ];
+}
+
+if (!function_exists('plugin_version_perfilmenus')) {
+    /**
+     * Backward compatible proxy for legacy slug version information.
+     */
+    function plugin_version_perfilmenus() {
+        return plugin_version_plugin_perfilmenus();
+    }
 }
 
 /**
@@ -58,6 +67,15 @@ function plugin_plugin_perfilmenus_install() {
     return true;
 }
 
+if (!function_exists('plugin_perfilmenus_install')) {
+    /**
+     * Backward compatible proxy for legacy slug installation.
+     */
+    function plugin_perfilmenus_install() {
+        return plugin_plugin_perfilmenus_install();
+    }
+}
+
 /**
  * Uninstall routine
  */
@@ -71,4 +89,13 @@ function plugin_plugin_perfilmenus_uninstall() {
     }
 
     return true;
+}
+
+if (!function_exists('plugin_perfilmenus_uninstall')) {
+    /**
+     * Backward compatible proxy for legacy slug uninstallation.
+     */
+    function plugin_perfilmenus_uninstall() {
+        return plugin_plugin_perfilmenus_uninstall();
+    }
 }

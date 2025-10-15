@@ -10,7 +10,7 @@ class PluginPerfilmenusConfig
      */
     public static function getTypeName($nb = 0)
     {
-        return _n('Menu de perfil', 'Menus de perfil', $nb, 'plugin_perfilmenus');
+        return _n('Menu de perfil', 'Menus de perfil', $nb, 'perfilmenus');
     }
 
     /**
@@ -21,8 +21,8 @@ class PluginPerfilmenusConfig
     public static function getAvailableFeatures()
     {
         return [
-            'tickets'    => __('Tickets', 'plugin_perfilmenus'),
-            'ticket_new' => __('New ticket', 'plugin_perfilmenus'),
+            'tickets'     => _n('Ticket', 'Tickets', 2),
+            'ticket_new'  => __('New ticket'),
         ];
     }
 
@@ -129,7 +129,7 @@ class PluginPerfilmenusConfig
             self::saveProfileConfig((int)$profileId, $profileVisibility);
         }
 
-        Session::addMessageAfterRedirect(__('Configuration saved', 'plugin_perfilmenus'));
+        Session::addMessageAfterRedirect(__('Configuration saved', 'perfilmenus'));
     }
 
     /**
@@ -139,19 +139,16 @@ class PluginPerfilmenusConfig
     {
         Session::checkRight('config', READ);
 
-        $target    = Plugin::getWebDir('plugin_perfilmenus') . '/front/config.form.php';
+        $target    = Plugin::getWebDir('perfilmenus') . '/front/config.form.php';
         $profiles  = self::getAllProfiles();
         $features  = self::getAvailableFeatures();
 
-        $targetAttr = htmlspecialchars($target, ENT_QUOTES, 'UTF-8');
-        $csrfToken  = Session::getNewCSRFToken();
-
-        echo "<form method='post' action='{$targetAttr}' id='plugin_perfilmenus_config'>";
-        echo "<input type='hidden' name='_glpi_csrf_token' value='" . htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') . "'>";
+        echo Html::openForm($target, 'plugin_perfilmenus_config');
+        echo Html::hidden('_glpi_csrf_token', Session::getNewCSRFToken());
 
         echo "<table class='tab_cadre_fixehov'>";
         echo '<tr>';
-        echo '<th>' . __('Profile', 'plugin_perfilmenus') . '</th>';
+        echo '<th>' . __('Profile') . '</th>';
         foreach ($features as $label) {
             echo '<th>' . $label . '</th>';
         }
@@ -160,12 +157,16 @@ class PluginPerfilmenusConfig
         foreach ($profiles as $profile) {
             $config = self::getProfileConfig((int)$profile['id']);
             echo '<tr>';
-            echo '<td>' . htmlspecialchars($profile['name'], ENT_QUOTES, 'UTF-8') . '</td>';
+            echo '<td>' . Html::clean($profile['name']) . '</td>';
             foreach ($features as $featureKey => $label) {
-                $checked = $config[$featureKey] ? " checked='checked'" : '';
-                $featureAttr = htmlspecialchars($featureKey, ENT_QUOTES, 'UTF-8');
+                $checked = $config[$featureKey] ? 'checked' : '';
                 echo "<td class='center'>";
-                echo "<input type='checkbox' name='visibility[" . (int)$profile['id'] . "][{$featureAttr}]' value='1'{$checked}>";
+                echo sprintf(
+                    "<input type='checkbox' name='visibility[%d][%s]' value='1' %s>",
+                    (int)$profile['id'],
+                    Html::entities_deep($featureKey),
+                    $checked
+                );
                 echo '</td>';
             }
             echo '</tr>';
@@ -175,11 +176,11 @@ class PluginPerfilmenusConfig
 
         if (Session::haveRight('config', UPDATE)) {
             echo "<div class='center'>";
-            echo "<button type='submit' name='save' class='btn btn-primary'>" . _sx('button', 'Save') . '</button>';
+            echo Html::submit(_sx('button', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary']);
             echo '</div>';
         }
 
-        echo '</form>';
+        echo Html::closeForm();
     }
 
     /**
@@ -298,13 +299,13 @@ class PluginPerfilmenusConfig
 
         switch ($feature) {
             case 'tickets':
-                $entry['title'] = __('Tickets', 'plugin_perfilmenus');
+                $entry['title'] = _n('Ticket', 'Tickets', 2);
                 $entry['url']   = Ticket::getSearchURL(false);
                 $entry['icon']  = 'ti ti-ticket';
                 break;
 
             case 'ticket_new':
-                $entry['title'] = __('New ticket', 'plugin_perfilmenus');
+                $entry['title'] = __('New ticket');
                 $entry['url']   = Ticket::getFormURL(false);
                 $entry['icon']  = 'ti ti-plus';
                 break;
