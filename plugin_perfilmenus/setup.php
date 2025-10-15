@@ -6,18 +6,32 @@
 /**
  * Initialize plugin hooks
  */
-function plugin_init_perfilmenus() {
+function plugin_init_plugin_perfilmenus() {
     global $PLUGIN_HOOKS;
 
-    $PLUGIN_HOOKS['csrf_compliant']['perfilmenus'] = true;
-    $PLUGIN_HOOKS['config_page']['perfilmenus'] = 'front/config.form.php';
-    $PLUGIN_HOOKS['redefine_menus']['perfilmenus'] = 'plugin_perfilmenus_redefine_menus';
+    $PLUGIN_HOOKS['csrf_compliant']['plugin_perfilmenus'] = true;
+    $PLUGIN_HOOKS['config_page']['plugin_perfilmenus'] = 'front/config.form.php';
+    $PLUGIN_HOOKS['redefine_menus']['plugin_perfilmenus'] = 'plugin_perfilmenus_redefine_menus';
+
+    // Backward compatibility with historical slug without the `plugin_` prefix.
+    $PLUGIN_HOOKS['csrf_compliant']['perfilmenus'] = $PLUGIN_HOOKS['csrf_compliant']['plugin_perfilmenus'];
+    $PLUGIN_HOOKS['config_page']['perfilmenus'] = $PLUGIN_HOOKS['config_page']['plugin_perfilmenus'];
+    $PLUGIN_HOOKS['redefine_menus']['perfilmenus'] = $PLUGIN_HOOKS['redefine_menus']['plugin_perfilmenus'];
+}
+
+if (!function_exists('plugin_init_perfilmenus')) {
+    /**
+     * Backward compatible proxy for legacy slug initialization.
+     */
+    function plugin_init_perfilmenus() {
+        plugin_init_plugin_perfilmenus();
+    }
 }
 
 /**
  * Plugin information
  */
-function plugin_version_perfilmenus() {
+function plugin_version_plugin_perfilmenus() {
     return [
         'name'           => __('Menu por perfil', 'perfilmenus'),
         'version'        => '1.0.0',
@@ -33,10 +47,19 @@ function plugin_version_perfilmenus() {
     ];
 }
 
+if (!function_exists('plugin_version_perfilmenus')) {
+    /**
+     * Backward compatible proxy for legacy slug version information.
+     */
+    function plugin_version_perfilmenus() {
+        return plugin_version_plugin_perfilmenus();
+    }
+}
+
 /**
  * Install routine
  */
-function plugin_perfilmenus_install() {
+function plugin_plugin_perfilmenus_install() {
     global $DB;
 
     $table = 'glpi_plugin_perfilmenus_profiles';
@@ -58,10 +81,19 @@ function plugin_perfilmenus_install() {
     return true;
 }
 
+if (!function_exists('plugin_perfilmenus_install')) {
+    /**
+     * Backward compatible proxy for legacy slug installation.
+     */
+    function plugin_perfilmenus_install() {
+        return plugin_plugin_perfilmenus_install();
+    }
+}
+
 /**
  * Uninstall routine
  */
-function plugin_perfilmenus_uninstall() {
+function plugin_plugin_perfilmenus_uninstall() {
     global $DB;
 
     $table = 'glpi_plugin_perfilmenus_profiles';
@@ -71,4 +103,13 @@ function plugin_perfilmenus_uninstall() {
     }
 
     return true;
+}
+
+if (!function_exists('plugin_perfilmenus_uninstall')) {
+    /**
+     * Backward compatible proxy for legacy slug uninstallation.
+     */
+    function plugin_perfilmenus_uninstall() {
+        return plugin_plugin_perfilmenus_uninstall();
+    }
 }
