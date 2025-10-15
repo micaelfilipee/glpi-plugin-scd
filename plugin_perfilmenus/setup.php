@@ -27,7 +27,7 @@ function plugin_version_plugin_perfilmenus() {
         'requirements'   => [
             'glpi' => [
                 'min' => '9.5.5',
-                'max' => '9.5.x',
+                'max' => '10.5.x',
             ],
         ],
     ];
