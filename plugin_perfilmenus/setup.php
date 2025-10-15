@@ -12,20 +12,6 @@ function plugin_init_plugin_perfilmenus() {
     $PLUGIN_HOOKS['csrf_compliant']['plugin_perfilmenus'] = true;
     $PLUGIN_HOOKS['config_page']['plugin_perfilmenus'] = 'front/config.form.php';
     $PLUGIN_HOOKS['redefine_menus']['plugin_perfilmenus'] = 'plugin_perfilmenus_redefine_menus';
-
-    // Backward compatibility with historical slug without the `plugin_` prefix.
-    $PLUGIN_HOOKS['csrf_compliant']['perfilmenus'] = $PLUGIN_HOOKS['csrf_compliant']['plugin_perfilmenus'];
-    $PLUGIN_HOOKS['config_page']['perfilmenus'] = $PLUGIN_HOOKS['config_page']['plugin_perfilmenus'];
-    $PLUGIN_HOOKS['redefine_menus']['perfilmenus'] = $PLUGIN_HOOKS['redefine_menus']['plugin_perfilmenus'];
-}
-
-if (!function_exists('plugin_init_perfilmenus')) {
-    /**
-     * Backward compatible proxy for legacy slug initialization.
-     */
-    function plugin_init_perfilmenus() {
-        plugin_init_plugin_perfilmenus();
-    }
 }
 
 /**
@@ -33,7 +19,7 @@ if (!function_exists('plugin_init_perfilmenus')) {
  */
 function plugin_version_plugin_perfilmenus() {
     return [
-        'name'           => __('Menu por perfil', 'perfilmenus'),
+        'name'           => __('Menu por perfil', 'plugin_perfilmenus'),
         'version'        => '1.0.0',
         'author'         => 'plugin_perfilmenus',
         'homepage'       => 'https://glpi-developer-documentation.readthedocs.io/',
